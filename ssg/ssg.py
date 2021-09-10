@@ -3,6 +3,7 @@ import os
 import shutil
 
 OUTPUT_FOLDER = "dist"
+
 html_skeleton = """<!doctype html>
 <html lang="en">
 <head>
