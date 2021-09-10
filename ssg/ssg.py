@@ -17,7 +17,7 @@ html_skeleton = """<!doctype html>
 </html>
 """
 
-# Returns only .txt files by filtering all files in folder_name
+# Returns a list of .txt files by filtering all files in folder_name
 def get_txt_files(folder_name):
     all_files = os.listdir(folder_name)
     filtered_files = filter(lambda f: f.endswith(".txt"), all_files)
@@ -40,12 +40,14 @@ def get_title(file_location):
             first_3_lines.append(cleaned_line)
             i += 1
     
+    # Check if title criteria is met
     if(len(first_3_lines) == 3):
         if(first_3_lines[0] and not first_3_lines[1] and not first_3_lines[2]):
             title = first_3_lines[0]
                 
     return title
 
+# Returns html content, including title, if set
 def generate_content(file_location, title):
     titled_format = "<h1>{}</h1>\n\n\n{}"
     content = ""
@@ -65,7 +67,8 @@ def generate_content(file_location, title):
         content = titled_format.format(title, content)
         
     return content
-    
+
+# Inserts title, stylesheet, and content to html_skeleton, returns the result
 def generate_html(file_name, title, stylesheet, content):
     ss_tag = ""
     
