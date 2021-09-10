@@ -56,8 +56,8 @@ def generate_content(file_location, title):
     if(title):
         content = content.split("\n", 3)[3]
     
-    content = "<p>\n" + content
-    content = content.replace("\n\n", "\n</p>\n\n<p>\n")
+    content = "<p>" + content
+    content = content.replace("\n\n", "</p>\n\n<p>")
     content = content + "\n</p>"
     
     if(title):
