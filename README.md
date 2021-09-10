@@ -28,7 +28,7 @@ Becomes:
 <head>
     <meta charset="utf-8">
     <title>Custom title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">{stylesheet}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <h1>Custom title</h1>
