@@ -21,7 +21,7 @@ of a paragraph.
 
 Becomes:
 
-###### example.html
+###### ./dist/example.html
 ```html
 <!doctype html>
 <html lang="en">
