@@ -1,6 +1,9 @@
 # Python Static Site Generator (SSG)
 Uses python to generate static **html** files from a single **txt** or folder of **txt** files. 
 
+# Prerequisites
+* Python3
+
 # Features
 * Supports stylesheets. Pass the url of the stylesheet to ```-s``` or ```--stylesheet``` (See usage).
 * Supports titles. If the first line is followed by two blank lines, it will be encased in an ```<h1>``` tag and set in ```<head>```.
