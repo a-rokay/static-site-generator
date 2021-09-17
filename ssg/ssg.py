@@ -102,7 +102,7 @@ if __name__ == "__main__":
     
     files = []
     folder = ""
-    is_folder = not input.endswith(".txt")
+    is_folder = os.path.isdir(input)
     
     if(is_folder):
         folder = input + "/"
