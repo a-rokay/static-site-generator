@@ -46,9 +46,16 @@ of a paragraph.</p>
 ```
 
 # Usage
+1. Passing a single text file:
 ```
 ssg.py -i text.txt
+```
+2. Passing a folder. Only **txt** files will be parsed:
+```
 ssg.py -i folder
+```
+3. Passing a folder *and* providing a stylesheet:
+```
 ssg.py -i folder -s https://example.com/with/css.css
 ```
 
@@ -64,6 +71,18 @@ optional arguments:
   -i INPUT, --input INPUT                   pass a .txt file or folder of .txt files
   -s STYLESHEET, --stylesheet STYLESHEET    URL to a stylesheet
 ```
+
+##### --help/-h
+Displays a list of arguments and what they do (above).
+
+##### --version/-v
+Displays the program name and version.
+
+##### --input/-i
+Required argument. Used to provide an input folder or file. Only **txt** files will be parsed in folders. See usage #1 and #2.
+
+##### --stylesheet/-s
+Optional argument. Pass a url to a stylesheet. See usage #3.
 
 # Author
 [Ahmad Rokay](https://dev.to/ar)
