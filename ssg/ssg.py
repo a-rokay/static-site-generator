@@ -49,6 +49,10 @@ def get_title(file_location):
 
 # Returns html content, including title, if set
 def generate_content(file_location, title):
+
+    if(not file_location.endswith(".txt")):
+        return
+
     titled_format = "<h1>{}</h1>\n\n\n{}"
     content = ""
     
@@ -114,5 +118,8 @@ if __name__ == "__main__":
         file_location = folder + file
         title = get_title(file_location)
         content = generate_content(file_location, title)
-        html = generate_html(file, title, stylesheet, content)
-        output_to_file(file, html)
+        
+        # Make sure content was generated (file not skipped)
+        if(content):
+            html = generate_html(file, title, stylesheet, content)
+            output_to_file(file, html)
