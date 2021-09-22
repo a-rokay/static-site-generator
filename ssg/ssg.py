@@ -49,7 +49,6 @@ def get_title(file_location):
 
 # Returns html content, including title, if set
 def generate_content(file_location, title):
-
     if(not file_location.endswith(".txt")):
         return
 
