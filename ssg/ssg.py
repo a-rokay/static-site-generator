@@ -20,12 +20,12 @@ html_skeleton = """<!doctype html>
 """
 
 # Returns a list of files with acceptable file types by filtering all files in folder_name
-def get_all_files(folder_name):
+def get_accepted_files(folder_name):
     all_files = os.listdir(folder_name)
-    filtered_files = filter(lambda f: filter_files(f), all_files)
+    filtered_files = filter(lambda f: is_file_accepted(f), all_files)
     return list(filtered_files)
 
-def filter_files(filename):
+def is_file_accepted(filename):
     for type in ACCEPTED_FILE_TYPES:
         if filename.endswith(type):
             return True
@@ -75,14 +75,14 @@ def generate_content(file_location, title):
     content = content + "\n</p>"
 
     if file_location.endswith(".md"):
-        title, content = process_markdown(content, title)
+        content = process_markdown(content)
     
     if(title):
         content = titled_format.format(title, content)
         
     return content
 
-def process_markdown(content, title):
+def process_markdown(content):
     # Process bold markdown
     content = re.sub(r'(__[^\r\n\_].*?__)|(\*\*[^\r\n\*].*?\*\*)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
     
@@ -90,12 +90,10 @@ def process_markdown(content, title):
     content = re.sub(r'(_[^\r\n\_].*?_)|(\*[^\r\n\*].*?\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
     # Process header markdown
-    headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
-    firstline = content.split("\n", 2)[0]
     headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>\n{pTag}'.format(endpTag=s.group(5) if s.group(5) is not None else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag=s.group(1) if s.group(1) is not None else "")
     content = re.sub(r'(|<p>)(#{1,5})\s(.*)((<\/p>)|(?<!<\/p>)\n|$)', headerTag, content)
 
-    return title, content
+    return content
 
 # Inserts title, stylesheet, and content to html_skeleton, returns the result
 def generate_html(file_name, title, stylesheet, content):
@@ -135,9 +133,9 @@ if __name__ == "__main__":
     
     if(is_folder):
         folder = input + "/"
-        files = get_all_files(folder)
+        files = get_accepted_files(folder)
     else:
-        if filter_files(input):
+        if is_file_accepted(input):
             files.append(input)
         else:
             print("Invalid file type!")
