@@ -57,7 +57,7 @@ def get_txt_title(file_location):
 
 # Returns html content, including title, if set
 def generate_content(file_location, title):
-    if(not filter_files(file_location)):
+    if(not is_file_accepted(file_location)):
         return
 
     titled_format = "<h1>{}</h1>\n\n\n{}"
