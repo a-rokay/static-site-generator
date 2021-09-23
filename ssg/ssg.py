@@ -92,9 +92,9 @@ def paragraphWrap(content):
     return "\n\n".join(newContent)
 
 def process_markdown(content, title):
-    content = re.sub(r'(__[^_\n\r]+__)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
+    content = re.sub(r'(__[^\r\n]*__)|(\*\*[^\r\n]*\*\*)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
     print(content)
-    content = re.sub(r'_[^_\n\r]+_', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
+    content = re.sub(r'(_[^\n\r]+_)|(\*[\n\r]*\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
     headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
     firstline = content.split("\n", 2)[0]
