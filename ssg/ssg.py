@@ -70,20 +70,30 @@ def generate_content(file_location, title):
     if(title):
         content = content.split("\n", 3)[3]
     
-    content = "<p>" + content
-    content = content.replace("\n\n", "</p>\n\n<p>")
-    content = content + "\n</p>"
+    # old paragraph algo, might create unclosed <p> tags
+    # content = "<p>" + content
+    # content = content.replace("\n\n", "</p>\n\n<p>")
+    # content = content + "\n</p>"
 
     if file_location.endswith(".md"):
         title, content = process_markdown(content, title)
+
+    content = paragraphWrap(content)
     
     if(title):
         content = titled_format.format(title, content)
         
     return content
 
+def paragraphWrap(content):
+    newContent = []
+    for paragraph in content.split("\n\n"):
+        newContent.append("<p>{}</p>".format(paragraph))
+    return "\n\n".join(newContent)
+
 def process_markdown(content, title):
     content = re.sub(r'(__[^_\n\r]+__)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
+    print(content)
     content = re.sub(r'_[^_\n\r]+_', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
     headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
