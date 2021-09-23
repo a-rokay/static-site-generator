@@ -1,8 +1,10 @@
 import argparse
 import os
 import shutil
+import re
 
 OUTPUT_FOLDER = "dist"
+ACCEPTED_FILE_TYPES = [".txt", ".md"]
 
 html_skeleton = """<!doctype html>
 <html lang="en">
@@ -17,14 +19,20 @@ html_skeleton = """<!doctype html>
 </html>
 """
 
-# Returns a list of .txt files by filtering all files in folder_name
-def get_txt_files(folder_name):
+# Returns a list of files with acceptable file types by filtering all files in folder_name
+def get_all_files(folder_name):
     all_files = os.listdir(folder_name)
-    filtered_files = filter(lambda f: f.endswith(".txt"), all_files)
+    filtered_files = filter(lambda f: filter_files(f), all_files)
     return list(filtered_files)
 
+def filter_files(filename):
+    for type in ACCEPTED_FILE_TYPES:
+        if filename.endswith(type):
+            return True
+    return False
+
 # Returns None if no title is found
-def get_title(file_location):
+def get_txt_title(file_location):
     title = None
     first_3_lines = []
     i = 0
@@ -44,12 +52,12 @@ def get_title(file_location):
     if(len(first_3_lines) == 3):
         if(first_3_lines[0] and not first_3_lines[1] and not first_3_lines[2]):
             title = first_3_lines[0]
-                
+
     return title
 
 # Returns html content, including title, if set
 def generate_content(file_location, title):
-    if(not file_location.endswith(".txt")):
+    if(not filter_files(file_location)):
         return
 
     titled_format = "<h1>{}</h1>\n\n\n{}"
@@ -65,11 +73,30 @@ def generate_content(file_location, title):
     content = "<p>" + content
     content = content.replace("\n\n", "</p>\n\n<p>")
     content = content + "\n</p>"
+
+    if file_location.endswith(".md"):
+        title, content = process_markdown(content, title)
     
     if(title):
         content = titled_format.format(title, content)
         
     return content
+
+def process_markdown(content, title):
+    content = re.sub(r'(__[^_\n\r]+__)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
+    content = re.sub(r'_[^_\n\r]+_', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
+
+    headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
+    firstline = content.split("\n", 2)[0]
+    if (re.search(headerRegex, firstline)):
+        title = firstline[firstline.rfind("# ") + 1:]
+    
+    content = re.sub(headerRegex, headerWrap, content)
+    return title, content
+
+def headerWrap(content):
+    headerSize = content[0][0: content[0].find(" ")].count('#')
+    return "<h{size}>{content}</h{size}>\n".format(size=headerSize, content=re.sub(r'(<.*>)?#+\s', "", content[0][0: content[0].find("\n")]))
 
 # Inserts title, stylesheet, and content to html_skeleton, returns the result
 def generate_html(file_name, title, stylesheet, content):
@@ -85,7 +112,7 @@ def output_to_file(file_name, html):
     if(not os.path.isdir(OUTPUT_FOLDER)):
         os.mkdir(OUTPUT_FOLDER)
     
-    file_location = OUTPUT_FOLDER + "/" + file_name.replace(".txt", ".html")
+    file_location = OUTPUT_FOLDER + "/" + file_name.replace(file_name[file_name.rfind("."):], ".html")
     with open(file_location, "w", encoding="utf8") as output_file:
         output_file.write(html)
     
@@ -109,15 +136,18 @@ if __name__ == "__main__":
     
     if(is_folder):
         folder = input + "/"
-        files = get_txt_files(folder)
+        files = get_all_files(folder)
     else:
-        files.append(input)
+        if filter_files(input):
+            files.append(input)
+        else:
+            print("Invalid file type!")
+            print("Current accepted file types are: " + ", ".join(ACCEPTED_FILE_TYPES))
     
     for file in files:
         file_location = folder + file
-        title = get_title(file_location)
+        title = get_txt_title(file_location) if file_location.endswith(".txt") else None
         content = generate_content(file_location, title)
-        
         # Make sure content was generated (file not skipped)
         if(content):
             html = generate_html(file, title, stylesheet, content)
