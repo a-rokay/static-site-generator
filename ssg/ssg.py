@@ -69,49 +69,33 @@ def generate_content(file_location, title):
     # Skip the first 3 lines if there's a title
     if(title):
         content = content.split("\n", 3)[3]
-    
-    # old paragraph algo, might create unclosed <p> tags
-    # content = "<p>" + content
-    # content = content.replace("\n\n", "</p>\n\n<p>")
-    # content = content + "\n</p>"
+
+    content = "<p>" + content
+    content = content.replace("\n\n", "</p>\n\n<p>")
+    content = content + "\n</p>"
 
     if file_location.endswith(".md"):
         title, content = process_markdown(content, title)
-
-    # Identify and process paragraphs
-    content = paragraph_wrap(content)
     
     if(title):
         content = titled_format.format(title, content)
         
     return content
 
-def paragraph_wrap(content):
-    newContent = []
-    for paragraph in content.split("\n\n"):
-        newContent.append("<p>{}</p>".format(paragraph))
-    return "\n\n".join(newContent)
-
 def process_markdown(content, title):
     # Process bold markdown
-    content = re.sub(r'(__[^\r\n]*__)|(\*\*[^\r\n]*\*\*)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
+    content = re.sub(r'(__[^\r\n\_].*?__)|(\*\*[^\r\n\*].*?\*\*)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
     
     # Process italic markdown
-    content = re.sub(r'(_[^\n\r]+_)|(\*[\n\r]*\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
+    content = re.sub(r'(_[^\r\n\_].*?_)|(\*[^\r\n\*].*?\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
     # Process header markdown
     headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
     firstline = content.split("\n", 2)[0]
-    if (re.search(headerRegex, firstline)):
-        title = firstline[firstline.rfind("# ") + 1:]
-    
-    content = re.sub(headerRegex, header_wrap, content)
-    
-    return title, content
+    headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>\n{pTag}'.format(endpTag=s.group(5) if s.group(5) is not None else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag=s.group(1) if s.group(1) is not None else "")
+    content = re.sub(r'(|<p>)(#{1,5})\s(.*)((<\/p>)|(?<!<\/p>)\n|$)', headerTag, content)
 
-def header_wrap(content):
-    headerSize = content[0][0: content[0].find(" ")].count('#')
-    return "<h{size}>{content}</h{size}>\n".format(size=headerSize, content=re.sub(r'(<.*>)?#+\s', "", content[0][0: content[0].find("\n")]))
+    return title, content
 
 # Inserts title, stylesheet, and content to html_skeleton, returns the result
 def generate_html(file_name, title, stylesheet, content):
