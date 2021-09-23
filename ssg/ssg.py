@@ -78,33 +78,38 @@ def generate_content(file_location, title):
     if file_location.endswith(".md"):
         title, content = process_markdown(content, title)
 
-    content = paragraphWrap(content)
+    # Identify and process paragraphs
+    content = paragraph_wrap(content)
     
     if(title):
         content = titled_format.format(title, content)
         
     return content
 
-def paragraphWrap(content):
+def paragraph_wrap(content):
     newContent = []
     for paragraph in content.split("\n\n"):
         newContent.append("<p>{}</p>".format(paragraph))
     return "\n\n".join(newContent)
 
 def process_markdown(content, title):
+    # Process bold markdown
     content = re.sub(r'(__[^\r\n]*__)|(\*\*[^\r\n]*\*\*)', lambda s: "<b>{}</b>".format(s[0][2:-2]), content)
-    print(content)
+    
+    # Process italic markdown
     content = re.sub(r'(_[^\n\r]+_)|(\*[\n\r]*\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
+    # Process header markdown
     headerRegex = r'(<.*>)?#{1,5}\s\S.*\r?\n'
     firstline = content.split("\n", 2)[0]
     if (re.search(headerRegex, firstline)):
         title = firstline[firstline.rfind("# ") + 1:]
     
-    content = re.sub(headerRegex, headerWrap, content)
+    content = re.sub(headerRegex, header_wrap, content)
+    
     return title, content
 
-def headerWrap(content):
+def header_wrap(content):
     headerSize = content[0][0: content[0].find(" ")].count('#')
     return "<h{size}>{content}</h{size}>\n".format(size=headerSize, content=re.sub(r'(<.*>)?#+\s', "", content[0][0: content[0].find("\n")]))
 
@@ -130,7 +135,7 @@ def output_to_file(file_name, html):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Static site generator")
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="show program's version number and exit")
-    parser.add_argument("-i", "--input", help="pass a .txt file or folder of .txt files", required=True)
+    parser.add_argument("-i", "--input", help="pass a file or folder of files", required=True)
     parser.add_argument("-s", "--stylesheet", help="URL to a stylesheet")
     args = parser.parse_args()
     
