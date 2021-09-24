@@ -8,6 +8,7 @@ Uses python to generate static **html** files from a single **txt** or folder of
 * Supports stylesheets. Pass the url of the stylesheet to ```-s``` or ```--stylesheet``` (See usage).
 * Supports titles. If the first line is followed by two blank lines, it will be encased in an ```<h1>``` tag and set in ```<head>```.
 * A blank line in the input file constitutes the end of a paragraph.
+* Markdown files (`.md`) is supported for __bold text__ (`__example__` or `**example**`), _italic text_ (`_example_` or `*example*`) and headers (`# example` will become `<h1>example</h1>`)
 
 # Example
 
