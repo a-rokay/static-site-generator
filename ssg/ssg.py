@@ -90,8 +90,8 @@ def process_markdown(content):
     content = re.sub(r'(_[^\r\n\_].*?_)|(\*[^\r\n\*].*?\*)', lambda s: "<i>{}</i>".format(s[0][1:-1]), content)
 
     # Process header markdown
-    headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>\n{pTag}'.format(endpTag=s.group(5) if s.group(5) is not None and s.group(1) is None else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag=s.group(1) if s.group(1) is not None and s.group(5) is None else "")
-    content = re.sub(r'(|<p>)(#{1,5})\s(.*)((<\/p>)|(?<!<\/p>)\n|$)', headerTag, content)
+    headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>{pTag}'.format(endpTag="</p>\n\n" if s.group(1)=="\n" else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag="\n\n<p>" if s.group(4)=="\n" else "")
+    content = re.sub(r'(|(?<!\n)\n|<p>)(#{1,5})\s(.*)(<\/p>|(?<!<\/p>)\n|$)', headerTag, content)
 
     return content
 
