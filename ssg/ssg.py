@@ -7,7 +7,7 @@ OUTPUT_FOLDER = "dist"
 ACCEPTED_FILE_TYPES = [".txt", ".md"]
 
 html_skeleton = """<!doctype html>
-<html lang="en">
+<html lang="{lang}">
 <head>
     <meta charset="utf-8">
     <title>{title}</title>
@@ -96,13 +96,13 @@ def process_markdown(content):
     return content
 
 # Inserts title, stylesheet, and content to html_skeleton, returns the result
-def generate_html(file_name, title, stylesheet, content):
+def generate_html(lang, file_name, title, stylesheet, content):
     ss_tag = ""
     
     if(stylesheet):
         ss_tag = '\n\t<link rel="stylesheet" href="{}">'.format(stylesheet)
         
-    return html_skeleton.format(title=title if title else file_name, stylesheet=ss_tag, content=content)
+    return html_skeleton.format(lang=lang, title=title if title else file_name, stylesheet=ss_tag, content=content)
     
 def output_to_file(file_name, html):
     # Create output folder if it doesn't exist
@@ -115,10 +115,11 @@ def output_to_file(file_name, html):
     
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Static site generator")
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="show program's version number and exit")
-    parser.add_argument("-i", "--input", help="pass a file or folder of files", required=True)
+    parser = argparse.ArgumentParser(description="Static Site Generator")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="Show program's version number and exit")
+    parser.add_argument("-i", "--input", help="Pass a file or folder of files", required=True)
     parser.add_argument("-s", "--stylesheet", help="URL to a stylesheet")
+    parser.add_argument("-l", "--lang", help="Language to be set in root html tag", default="en")
     args = parser.parse_args()
     
     if(os.path.isdir(OUTPUT_FOLDER)):
@@ -147,5 +148,5 @@ if __name__ == "__main__":
         content = generate_content(file_location, title)
         # Make sure content was generated (file not skipped)
         if(content):
-            html = generate_html(file, title, stylesheet, content)
+            html = generate_html(args.lang, file, title, stylesheet, content)
             output_to_file(file, html)
