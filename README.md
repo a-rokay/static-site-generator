@@ -8,7 +8,7 @@ Uses python to generate static **html** files from a single **txt** or folder of
 * Supports stylesheets. Pass the url of the stylesheet to ```-s``` or ```--stylesheet``` (See usage).
 * Supports titles. If the first line is followed by two blank lines, it will be encased in an ```<h1>``` tag and set in ```<head>```.
 * A blank line in the input file constitutes the end of a paragraph.
-* Markdown files (`.md`) is supported for __bold text__ (`__example__` or `**example**`), _italic text_ (`_example_` or `*example*`) and headers (`# example` will become `<h1>example</h1>`)
+* Markdown files (`.md`) is supported for bold, italics, headings, and inline code.
 
 # Example
 
@@ -59,6 +59,10 @@ ssg.py -i folder
 ```
 ssg.py -i folder -s https://example.com/with/css.css
 ```
+4. Passing a language:
+```
+ssg.py -i folder -l pt-BR
+```
 
 # Help
 ```
@@ -67,10 +71,11 @@ usage: ssg.py [-h] [-v] -i INPUT [-s STYLESHEET]
 Static site generator
 
 optional arguments:
-  -h, --help                                show this help message and exit
-  -v, --version                             show program's version number and exit
-  -i INPUT, --input INPUT                   pass a .txt file or folder of .txt files
-  -s STYLESHEET, --stylesheet STYLESHEET    URL to a stylesheet
+  -h, --help            					Show this help message and exit
+  -v, --version         					Show program's version number and exit
+  -i INPUT, --input INPUT					Pass a file or folder of files
+  -s STYLESHEET, --stylesheet STYLESHEET	URL to a stylesheet
+  -l LANG, --lang LANG 						Language to be set in root html tag
 ```
 
 ##### --help/-h
@@ -84,6 +89,9 @@ Required argument. Used to provide an input folder or file. Only **txt** files w
 
 ##### --stylesheet/-s
 Optional argument. Pass a url to a stylesheet. See usage #3.
+
+##### --lang/-l
+Optional argument. Pass a language to root html tag. See usage #4.
 
 # Author
 [Ahmad Rokay](https://dev.to/ar)
