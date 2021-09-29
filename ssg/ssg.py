@@ -88,6 +88,9 @@ def process_markdown(content):
     
     # Process italic markdown
     content = re.sub('\*([^\s\*.].*?)\*|_([^\s\_.].*?)_', r'<em>\1\2</em>', content, flags=re.DOTALL)
+    
+    # Process single backtick markdown
+    content = re.sub('`([^\r\n\`].*?)`', r'<code>\1</code>', content, flags=re.DOTALL)
 
     # Process header markdown
     headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>{pTag}'.format(endpTag="</p>\n\n" if s.group(1)=="\n" else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag="\n\n<p>" if s.group(4)=="\n" else "")
