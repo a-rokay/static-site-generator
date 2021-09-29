@@ -84,10 +84,10 @@ def generate_content(file_location, title):
 
 def process_markdown(content):
     # Process bold markdown
-    content = re.sub('\*\*([^\s\*.].*?)\*\*|__([^\s_.].*?)__', '<strong>\1\2</strong>', content, flags=re.DOTALL)
+    content = re.sub('\*\*([^\s\*.].*?)\*\*|__([^\s_.].*?)__', r'<strong>\1</strong>', content, flags=re.DOTALL)
     
     # Process italic markdown
-    content = re.sub('\*([^\s\*.].*?)\*|_([^\s\_.].*?)_', '<em>\1\2</em>', content, flags=re.DOTALL)
+    content = re.sub('\*([^\s\*.].*?)\*|_([^\s\_.].*?)_', r'<em>\1\2</em>', content, flags=re.DOTALL)
 
     # Process header markdown
     headerTag = lambda s: '{endpTag}<h{size}>{regexContent}</h{size}>{pTag}'.format(endpTag="</p>\n\n" if s.group(1)=="\n" else "", size=s.group(2).count('#'), regexContent=s.group(3), pTag="\n\n<p>" if s.group(4)=="\n" else "")
