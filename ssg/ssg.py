@@ -7,7 +7,7 @@ OUTPUT_FOLDER = "dist"
 ACCEPTED_FILE_TYPES = [".txt", ".md"]
 
 html_skeleton = """<!doctype html>
-<html lang="en">
+<html lang="{lang}">
 <head>
     <meta charset="utf-8">
     <title>{title}</title>
@@ -119,6 +119,7 @@ if __name__ == "__main__":
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="show program's version number and exit")
     parser.add_argument("-i", "--input", help="pass a file or folder of files", required=True)
     parser.add_argument("-s", "--stylesheet", help="URL to a stylesheet")
+    parser.add_argument("-l", "--lang", help="language to be set in root html tag", default="en")
     args = parser.parse_args()
     
     if(os.path.isdir(OUTPUT_FOLDER)):
