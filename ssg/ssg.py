@@ -115,11 +115,11 @@ def output_to_file(file_name, html):
     
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Static site generator")
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="show program's version number and exit")
-    parser.add_argument("-i", "--input", help="pass a file or folder of files", required=True)
+    parser = argparse.ArgumentParser(description="Static Site Generator")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1", help="Show program's version number and exit")
+    parser.add_argument("-i", "--input", help="Pass a file or folder of files", required=True)
     parser.add_argument("-s", "--stylesheet", help="URL to a stylesheet")
-    parser.add_argument("-l", "--lang", help="language to be set in root html tag", default="en")
+    parser.add_argument("-l", "--lang", help="Language to be set in root html tag", default="en")
     args = parser.parse_args()
     
     if(os.path.isdir(OUTPUT_FOLDER)):
