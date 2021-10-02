@@ -94,4 +94,4 @@ Optional argument. Pass a url to a stylesheet. See usage #3.
 Optional argument. Pass a language to root html tag. See usage #4.
 
 # Author
-[Ahmad Rokay](https://dev.to/ar)
+[Ahmad Rokay](https://github.com/a-rokay) 
