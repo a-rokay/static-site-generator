@@ -92,6 +92,3 @@ Optional argument. Pass a url to a stylesheet. See usage #3.
 
 ##### --lang/-l
 Optional argument. Pass a language to root html tag. See usage #4.
-
-# Author
-[Ahmad Rokay](https://github.com/a-rokay) 
