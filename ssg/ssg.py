@@ -137,10 +137,10 @@ if __name__ == "__main__":
                 data = json.load(f)
                 if len(data) == 0:
                     print("\nConfig File is empty!\n")
-                    exit()
+                    exit(1)
             except (FileNotFoundError, RuntimeError, json.decoder.JSONDecodeError) as err:
                 print("\nError parsing Config File: {0}\n".format(err))
-                exit()
+                exit(1)
         # For each command from JSON config file, set local parameters
         for i in data:
             if i == "input" or i == "i":
@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 lang = data[i]
         if input == None:
             print("No input file specified")
-            exit()
+            exit(1)
         try:
             lang, stylesheet
         except NameError:
