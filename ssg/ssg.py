@@ -2,6 +2,7 @@ import argparse
 import os
 import shutil
 import re
+import json
 
 OUTPUT_FOLDER = "dist"
 ACCEPTED_FILE_TYPES = [".txt", ".md"]
@@ -123,13 +124,32 @@ if __name__ == "__main__":
     parser.add_argument("-i", "--input", help="Pass a file or folder of files", required=True)
     parser.add_argument("-s", "--stylesheet", help="URL to a stylesheet")
     parser.add_argument("-l", "--lang", help="Language to be set in root html tag", default="en")
+    parser.add_argument("-c", "--config", help="Config file for arguments")
     args = parser.parse_args()
     
     if(os.path.isdir(OUTPUT_FOLDER)):
         shutil.rmtree(OUTPUT_FOLDER)
-
-    input = args.input
-    stylesheet = args.stylesheet
+    
+    # Check to see if Config File exists.
+    if args.config != None:
+        try:
+            with open(args.config) as f:
+                data = json.load(f)
+            for i in data:
+                if i == "input":
+                    input = data[i]
+                elif i == "stylesheet":
+                    stylesheet = data[i]
+                elif i == "lang":
+                    lang = data[i]
+                elif i == "version":
+                    version="%(prog)s 0.1"
+        except (FileNotFoundError, RuntimeError, json.decoder.JSONDecodeError) as err:
+            print("\nError parsing Config File: {0}\n".format(err))
+    else:
+        lang = args.lang
+        input = args.input
+        stylesheet = args.stylesheet
     
     files = []
     folder = ""
@@ -151,5 +171,5 @@ if __name__ == "__main__":
         content = generate_content(file_location, title)
         # Make sure content was generated (file not skipped)
         if(content):
-            html = generate_html(args.lang, file, title, stylesheet, content)
+            html = generate_html(lang, file, title, stylesheet, content)
             output_to_file(file, html)
