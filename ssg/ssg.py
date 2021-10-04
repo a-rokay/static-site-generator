@@ -132,18 +132,39 @@ if __name__ == "__main__":
 
     # Check to see if config file exists.
     if args.config != None:
-        try:
-            with open(args.config) as f:
+        with open(args.config) as f:
+            try:
                 data = json.load(f)
-            for i in data:
-                if i == "input" or i == "i":
+                if len(data) == 0:
+                    print("\nConfig File is empty!\n")
+                    exit()
+            except (FileNotFoundError, RuntimeError, json.decoder.JSONDecodeError) as err:
+                print("\nError parsing Config File: {0}\n".format(err))
+                exit()
+        # For each command from JSON config file, set local parameters
+        for i in data:
+            if i == "input" or i == "i":
+                if os.path.isfile(data[i]):
                     input = data[i]
-                elif i == "stylesheet" or i == "s":
+                elif os.path.isdir(data[i]):
+                    input = data[i]
+                else:
+                    print("\nInput File gathered from Config does not exist\n")
+            elif i == "stylesheet" or i == "s":
+                if os.path.isfile(data[i]):
                     stylesheet = data[i]
-                elif i == "lang" or i == "l":
-                    lang = data[i]
-        except (FileNotFoundError, RuntimeError, json.decoder.JSONDecodeError) as err:
-            print("\nError parsing Config File: {0}\n".format(err))
+                else:
+                    print("\nStylesheet gathered from Config does not exist\n")
+            elif i == "lang" or i == "l":
+                lang = data[i]
+        if input == None:
+            print("No input file specified")
+            exit()
+        try:
+            lang, stylesheet
+        except NameError:
+            lang = args.lang
+            stylesheet = args.stylesheet
     else:
         lang = args.lang
         input = args.input
