@@ -71,11 +71,11 @@ usage: ssg.py [-h] [-v] -i INPUT [-s STYLESHEET]
 Static site generator
 
 optional arguments:
-  -h, --help            					Show this help message and exit
-  -v, --version         					Show program's version number and exit
-  -i INPUT, --input INPUT					Pass a file or folder of files
-  -s STYLESHEET, --stylesheet STYLESHEET	URL to a stylesheet
-  -l LANG, --lang LANG 						Language to be set in root html tag
+  -h, --help                                Show this help message and exit
+  -v, --version                             Show program's version number and exit
+  -i INPUT, --input INPUT                   Pass a file or folder of files
+  -s STYLESHEET, --stylesheet STYLESHEET    URL to a stylesheet
+  -l LANG, --lang LANG                      Language to be set in root html tag
 ```
 
 ##### --help/-h
