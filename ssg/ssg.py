@@ -116,7 +116,31 @@ def output_to_file(file_name, html):
     file_location = OUTPUT_FOLDER + "/" + file_name.replace(file_name[file_name.rfind("."):], ".html")
     with open(file_location, "w", encoding="utf8") as output_file:
         output_file.write(html)
-    
+
+def get_config(config, input, lang, stylesheet):
+    # Check to see if config file exists.
+    if config:
+        with open(config) as f:
+            try:
+                data = json.load(f)
+                if len(data) == 0:
+                    print("\nConfig File is empty!\n")
+                    exit(1)
+            except (json.decoder.JSONDecodeError) as err:
+                print("\nError parsing Config File: {0}\n".format(err))
+                exit(1)
+        # For each command from JSON config file, set local parameters
+        for i in data:
+            if i == "input" or i == "i":
+                input = data[i]
+            elif i == "stylesheet" or i == "s":
+                stylesheet = data[i]
+            elif i == "lang" or i == "l":
+                lang = data[i]
+        if input == None:
+            print("No input file specified")
+            exit(1)
+    return input, lang, stylesheet
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Static Site Generator")
@@ -130,46 +154,12 @@ if __name__ == "__main__":
     if(os.path.isdir(OUTPUT_FOLDER)):
         shutil.rmtree(OUTPUT_FOLDER)
 
-    # Check to see if config file exists.
-    if args.config != None:
-        with open(args.config) as f:
-            try:
-                data = json.load(f)
-                if len(data) == 0:
-                    print("\nConfig File is empty!\n")
-                    exit(1)
-            except (FileNotFoundError, RuntimeError, json.decoder.JSONDecodeError) as err:
-                print("\nError parsing Config File: {0}\n".format(err))
-                exit(1)
-        # For each command from JSON config file, set local parameters
-        for i in data:
-            if i == "input" or i == "i":
-                if os.path.isfile(data[i]):
-                    input = data[i]
-                elif os.path.isdir(data[i]):
-                    input = data[i]
-                else:
-                    print("\nInput File gathered from Config does not exist\n")
-            elif i == "stylesheet" or i == "s":
-                if os.path.isfile(data[i]):
-                    stylesheet = data[i]
-                else:
-                    print("\nStylesheet gathered from Config does not exist\n")
-            elif i == "lang" or i == "l":
-                lang = data[i]
-        if input == None:
-            print("No input file specified")
-            exit(1)
-        try:
-            lang, stylesheet
-        except NameError:
-            lang = args.lang
-            stylesheet = args.stylesheet
-    else:
-        lang = args.lang
-        input = args.input
-        stylesheet = args.stylesheet
+    lang = args.lang
+    input = args.input
+    stylesheet = args.stylesheet
     
+    input, lang, stylesheet = get_config(args.config, input, lang, stylesheet)
+
     files = []
     folder = ""
     is_folder = os.path.isdir(input)

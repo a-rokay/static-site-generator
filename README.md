@@ -63,6 +63,10 @@ ssg.py -i folder -s https://example.com/with/css.css
 ```
 ssg.py -i folder -l pt-BR
 ```
+5. Passing a Config file:
+```
+ssg.py -c example.json
+```
 
 # Help
 ```
@@ -92,3 +96,6 @@ Optional argument. Pass a url to a stylesheet. See usage #3.
 
 ##### --lang/-l
 Optional argument. Pass a language to root html tag. See usage #4.
+
+#### --config/-c
+Optional argument. Pass a configuration JSON file that contains commands. This would allow for users to simplify the command line to a simple -c command.
