@@ -3,12 +3,14 @@ Uses python to generate static **html** files from a single **txt** or folder of
 
 # Prerequisites
 * Python3
+* Python-Markdown `pip install markdown`
+* Pygments `pip install pygments`
 
 # Features
 * Supports stylesheets. Pass the url of the stylesheet to ```-s``` or ```--stylesheet``` (See usage).
 * Supports titles. If the first line is followed by two blank lines, it will be encased in an ```<h1>``` tag and set in ```<head>```.
 * A blank line in the input file constitutes the end of a paragraph.
-* Markdown files (`.md`) is supported for bold, italics, headings, and inline code.
+* Full Markdown support
 
 # Example
 

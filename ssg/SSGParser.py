@@ -1,12 +1,14 @@
-import re
 import SSGUtil
+import markdown
+from pygments.formatters import HtmlFormatter
 
 html_skeleton = """<!doctype html>
 <html lang="{lang}">
 <head>
     <meta charset="utf-8">
     <title>{title}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">{stylesheet}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/pygments.css">{stylesheet}
 </head>
 <body>
 {content}
@@ -49,37 +51,29 @@ def generate_content(file_location, title):
     with open(file_location, "r", encoding="utf8") as input_file:
         content = input_file.read()
     
-    # Skip the first 3 lines if there's a title
-    if(title):
-        content = content.split("\n", 3)[3]
-
-    content = "<p>" + content
-    content = content.replace("\n\n", "</p>\n\n<p>")
-    content = content + "\n</p>"
-
     if file_location.endswith(".md"):
+        # Formatter for code blocks
+        formatter = HtmlFormatter(cssclass="codehilite")
+        # Will not add if the asset already exists
+        SSGUtil.add_asset("css", "pygments.css", formatter.get_style_defs())
+
         content = process_markdown(content)
-    
-    if(title):
-        content = titled_format.format(title, content)
+    else:
+        # Skip the first 3 lines if there's a title
+        if(title):
+            content = content.split("\n", 3)[3]
+        
+        content = "<p>" + content
+        content = content.replace("\n\n", "</p>\n\n<p>")
+        content = content + "\n</p>"
+
+        if(title):
+            content = titled_format.format(title, content)
         
     return content
 
 def process_markdown(content):
-    # Process bold markdown
-    content = re.sub('\*\*([^\s\*.].*?)\*\*|__([^\s_.].*?)__', r'<strong>\1</strong>', content, flags=re.DOTALL)
-    
-    # Process italic markdown
-    content = re.sub('\*([^\s\*.].*?)\*|_([^\s\_.].*?)_', r'<em>\1\2</em>', content, flags=re.DOTALL)
-    
-    # Process single backtick markdown
-    content = re.sub('`([^\r\n\`].*?)`', r'<code>\1</code>', content, flags=re.DOTALL)
-
-    # Process header markdown
-    headerTag = lambda s: '<h{size}>{content}</h{size}>\n'.format(size=s.group(2).count('#'), content=s.group(3))
-    content = re.sub(r'(|(?<!\n)\n|<p>)(#{1,5})\s(.*)(<\/p>|(?<!<\/p>)\n|$)', headerTag, content)
-
-    return content
+    return markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'tables'])
 
 # Inserts title, stylesheet, and content to html_skeleton, returns the result
 def generate_html(lang, file_name, title, stylesheet, content):
