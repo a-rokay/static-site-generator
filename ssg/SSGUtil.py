@@ -19,7 +19,7 @@ def is_file_accepted(filename):
     return False
     
 def output_to_file(file, html):
-    file_name = file.replace(file[file.rfind("."):], "")
+    file_name = os.path.splitext(os.path.basename(file))[0]
     file_location = OUTPUT_FOLDER + "/" + file_name
 
     os.mkdir(file_location)
