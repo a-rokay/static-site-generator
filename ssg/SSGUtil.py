@@ -18,8 +18,8 @@ def is_file_accepted(filename):
             return True
     return False
     
-def output_to_file(file_name, html):
-    file_name = file_name.replace(file_name[file_name.rfind("."):], "")
+def output_to_file(file, html):
+    file_name = file.replace(file[file.rfind("."):], "")
     file_location = OUTPUT_FOLDER + "/" + file_name
 
     os.mkdir(file_location)
