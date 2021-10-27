@@ -3,6 +3,8 @@ import os
 
 OUTPUT_FOLDER = "dist"
 ACCEPTED_FILE_TYPES = [".txt", ".md"]
+assets = []
+asset_types = []
 
 # Returns a list of files with acceptable file types by filtering all files in folder_name
 def get_accepted_files(folder_name):
@@ -55,3 +57,15 @@ def create_output_dir():
     if(not os.path.isdir(OUTPUT_FOLDER)):
         os.mkdir(OUTPUT_FOLDER)
         os.mkdir(OUTPUT_FOLDER + "/" + "assets")
+
+def add_asset(asset_type, asset_name, asset_content):
+    location = OUTPUT_FOLDER + "/assets/" + asset_type
+
+    if(asset_type not in asset_types):
+        os.mkdir(location)
+        asset_types.append(asset_type)
+
+    if(asset_name not in assets):
+        with open(location + "/" + asset_name, "w") as asset_file:
+            asset_file.write(asset_content)
+        assets.append(asset_name)
