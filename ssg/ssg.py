@@ -35,6 +35,8 @@ if __name__ == "__main__":
         else:
             print("Invalid file type!")
             print("Current accepted file types are: " + ", ".join(SSGUtil.ACCEPTED_FILE_TYPES))
+
+    SSGUtil.create_output_dir()
     
     for file in files:
         file_location = folder + file

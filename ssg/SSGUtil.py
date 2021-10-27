@@ -17,12 +17,12 @@ def is_file_accepted(filename):
     return False
     
 def output_to_file(file_name, html):
-    # Create output folder if it doesn't exist
-    if(not os.path.isdir(OUTPUT_FOLDER)):
-        os.mkdir(OUTPUT_FOLDER)
-    
-    file_location = OUTPUT_FOLDER + "/" + file_name.replace(file_name[file_name.rfind("."):], ".html")
-    with open(file_location, "w", encoding="utf8") as output_file:
+    file_name = file_name.replace(file_name[file_name.rfind("."):], "")
+    file_location = OUTPUT_FOLDER + "/" + file_name
+
+    os.mkdir(file_location)
+
+    with open(file_location + "/index.html", "w", encoding="utf8") as output_file:
         output_file.write(html)
 
 def get_config(config, input, lang, stylesheet):
@@ -49,3 +49,9 @@ def get_config(config, input, lang, stylesheet):
             print("No input file specified")
             exit(1)
     return input, lang, stylesheet
+
+def create_output_dir():
+    # Create output folder if it doesn't exist
+    if(not os.path.isdir(OUTPUT_FOLDER)):
+        os.mkdir(OUTPUT_FOLDER)
+        os.mkdir(OUTPUT_FOLDER + "/" + "assets")
