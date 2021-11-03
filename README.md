@@ -101,3 +101,6 @@ Optional argument. Pass a language to root html tag. See usage #4.
 
 #### --config/-c
 Optional argument. Pass a configuration JSON file that contains commands. This would allow for users to simplify the command line to a simple -c command.
+
+# Contributing
+Before contributing, please review [CONTRIBUTING.md](CONTRIBUTING.md)
