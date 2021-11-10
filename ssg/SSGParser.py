@@ -92,5 +92,5 @@ def generate_html(lang, file_name, title, stylesheet, content):
         lang=lang,
         title=title if title else file_name,
         stylesheet=ss_tag,
-        content=content,
+        content=content if content else "",
     )

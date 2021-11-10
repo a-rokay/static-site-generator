@@ -26,7 +26,7 @@ def output_to_file(file, html):
     file_name = os.path.splitext(os.path.basename(file))[0]
     file_location = OUTPUT_FOLDER + "/" + file_name
 
-    os.mkdir(file_location)
+    os.makedirs(file_location)
 
     with open(file_location + "/index.html", "w", encoding="utf8") as output_file:
         output_file.write(html)
@@ -69,7 +69,7 @@ def add_asset(asset_type, asset_name, asset_content):
     location = OUTPUT_FOLDER + "/assets/" + asset_type
 
     if asset_type not in asset_types:
-        os.mkdir(location)
+        os.makedirs(location)
         asset_types.append(asset_type)
 
     if asset_name not in assets:
