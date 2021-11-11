@@ -1,6 +1,6 @@
 [flake8]
 max-line-length = 88
-ignore = W503
+ignore = W503, W293
 exclude =
     __pycache__,
     dist
