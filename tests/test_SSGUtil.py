@@ -93,6 +93,24 @@ def test_get_config2(tmp_path):
     assert e.value.code == 1
 
 
+# Only input and lang keys should be returned
+def test_get_config3(tmp_path):
+    CONFIG_PATH = str(tmp_path) + "/config.json"
+    CONFIG_CONTENT = """
+    {
+        "input": "../../Sherlock Holmes Selected Stories",
+        "lang": "en-US"
+    } """
+
+    (tmp_path / "config.json").write_text(CONFIG_CONTENT)
+
+    input, lang, stylesheet = get_config(CONFIG_PATH, None, None, None)
+
+    assert input == "../../Sherlock Holmes Selected Stories"
+    assert lang == "en-US"
+    assert stylesheet is None
+
+
 # Should create output folder with assets folder inside
 def test_create_output_dir(tmp_path):
     OUT_FOLDER = tmp_path / OUTPUT_FOLDER
