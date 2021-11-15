@@ -107,7 +107,7 @@ def test_get_config3(tmp_path):
     input, lang, stylesheet = get_config(CONFIG_PATH, None, None, None)
 
     assert input == "../../Sherlock Holmes Selected Stories"
-    assert lang == "en-US"
+    assert lang is None
     assert stylesheet is None
 
 
