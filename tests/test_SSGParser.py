@@ -1,4 +1,9 @@
-from ssg.SSGParser import get_txt_title, generate_content, generate_html
+from ssg.SSGParser import (
+    get_txt_title,
+    generate_content,
+    generate_html,
+    process_markdown,
+)
 from ssg.SSGUtil import OUTPUT_FOLDER
 import shutil
 import os
@@ -145,3 +150,20 @@ def test_generate_html1():
     )
 
     assert html == answer
+
+
+# Should test if process_markdown content matches OUTPUT_MD content
+def test_process_markdown():
+    MD_CONTENT = """# h1
+## h2
+
+*italics*
+
+**bold**
+
+```python
+def function():
+    return 1
+```"""
+    result = process_markdown(MD_CONTENT)
+    assert result == OUTPUT_MD
