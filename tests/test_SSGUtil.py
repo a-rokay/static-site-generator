@@ -21,7 +21,8 @@ def test_get_accepted_files(tmp_path):
     (path / "html.html").write_text("1")
     (path / "jpg.jpg").write_text("1")
 
-    assert get_accepted_files(path) == ["md.md", "txt.txt"]
+    result = get_accepted_files(path)
+    assert result == ["md.md", "txt.txt"] or result == ["txt.txt", "md.md"]
 
 
 # Should create output file
