@@ -1,5 +1,13 @@
 # Python Static Site Generator (SSG)
-Uses python to generate static **html** files from a single **txt** or folder of **txt** files. 
+Uses python to generate static **html** files from a single **txt** or folder of **txt** files.
+
+# Download as a package
+Simply run `pip install ssg-a-rokay` then import into your project like so:
+```python
+from ssg import ssg
+
+ssg.main(["-i", "Sherlock Holmes Selected Stories])
+```
 
 # Prerequisites
 * Python3
