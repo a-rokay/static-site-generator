@@ -4,7 +4,7 @@ from src.ssg.SSGParser import (
     generate_html,
     process_markdown,
 )
-from ssg.SSGUtil import OUTPUT_FOLDER
+from src.ssg.SSGUtil import OUTPUT_FOLDER
 import shutil
 import os
 
