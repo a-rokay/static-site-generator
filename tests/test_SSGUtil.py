@@ -1,4 +1,4 @@
-from ssg.SSGUtil import (
+from src.ssg.SSGUtil import (
     get_accepted_files,
     output_to_file,
     get_config,
@@ -31,7 +31,7 @@ def test_output_to_file(tmp_path):
     OUT_FOLDER = tmp_path / OUTPUT_FOLDER
     OUT_FILE = str(OUT_FOLDER) + "/test/index.html"
 
-    with mock.patch("ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
+    with mock.patch("src.ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
         output_to_file(FILE_NAME, HTML_CONTENT)
 
     assert os.path.isfile(OUT_FILE)
@@ -115,7 +115,7 @@ def test_get_config3(tmp_path):
 def test_create_output_dir(tmp_path):
     OUT_FOLDER = tmp_path / OUTPUT_FOLDER
 
-    with mock.patch("ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
+    with mock.patch("src.ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
         create_output_dir()
 
     assert os.path.isdir(str(OUT_FOLDER) + "/assets")
@@ -127,7 +127,7 @@ def test_add_asset(tmp_path):
     OUT_FOLDER = tmp_path / OUTPUT_FOLDER
     OUT_FILE = str(OUT_FOLDER) + "/assets/css/test.css"
 
-    with mock.patch("ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
+    with mock.patch("src.ssg.SSGUtil.OUTPUT_FOLDER", str(OUT_FOLDER)):
         add_asset("css", "test.css", CSS_CONTENT)
 
     assert os.path.isfile(OUT_FILE)

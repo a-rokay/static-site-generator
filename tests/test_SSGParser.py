@@ -1,4 +1,4 @@
-from ssg.SSGParser import (
+from src.ssg.SSGParser import (
     get_txt_title,
     generate_content,
     generate_html,
