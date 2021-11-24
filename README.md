@@ -6,7 +6,7 @@ Simply run `pip install ssg-a-rokay` then import into your project like so:
 ```python
 from ssg import ssg
 
-ssg.main(["-i", "Sherlock Holmes Selected Stories])
+ssg.main(["-i", "Sherlock Holmes Selected Stories"])
 ```
 
 # Prerequisites
