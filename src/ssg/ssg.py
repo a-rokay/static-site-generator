@@ -4,7 +4,8 @@ import shutil
 import SSGParser
 import SSGUtil
 
-if __name__ == "__main__":
+
+def main(args):
     parser = argparse.ArgumentParser(description="Static Site Generator")
     parser.add_argument(
         "-v",
@@ -19,7 +20,7 @@ if __name__ == "__main__":
         "-l", "--lang", help="Language to be set in root html tag", default="en"
     )
     parser.add_argument("-c", "--config", help="Config file for arguments")
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     if os.path.isdir(SSGUtil.OUTPUT_FOLDER):
         shutil.rmtree(SSGUtil.OUTPUT_FOLDER)
@@ -61,3 +62,9 @@ if __name__ == "__main__":
         if content:
             html = SSGParser.generate_html(lang, file, title, stylesheet, content)
             SSGUtil.output_to_file(file, html)
+
+
+if __name__ == "__main__":
+    import sys
+
+    main(sys.argv[1:])
